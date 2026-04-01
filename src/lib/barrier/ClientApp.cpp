@@ -39,6 +39,7 @@
 #include "base/EventQueue.h"
 #include "base/Log.h"
 #include "common/Version.h"
+#include "net/TailscaleUtil.h"
 
 #if WINAPI_MSWINDOWS
 #include "platform/MSWindowsScreen.h"
@@ -387,6 +388,15 @@ ClientApp::foregroundStartup(int argc, char** argv)
 bool
 ClientApp::startClient()
 {
+    if (args().m_tailscaleMode) {
+        std::string tsAddr = barrier::get_tailscale_address();
+        if (tsAddr.empty()) {
+            LOG((CLOG_ERR "tailscale mode is active but no Tailscale interface found -- is Tailscale running?"));
+            return false;
+        }
+        LOG((CLOG_NOTE "tailscale mode active: TLS disabled, expecting server on Tailscale network (%s local)", tsAddr.c_str()));
+    }
+
     double retryTime;
     barrier::Screen* clientScreen = NULL;
     try {
