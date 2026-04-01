@@ -38,6 +38,7 @@
 #include "base/Log.h"
 #include "base/TMethodEventJob.h"
 #include "common/Version.h"
+#include "net/TailscaleUtil.h"
 #include "common/DataDirectories.h"
 
 #if SYSAPI_WIN32
@@ -564,6 +565,16 @@ ServerApp::startServer()
     ClientListener* listener = NULL;
     try {
         auto listenAddress = args().m_config->getBarrierAddress();
+        if (args().m_tailscaleMode) {
+            std::string tsAddr = barrier::get_tailscale_address();
+            if (tsAddr.empty()) {
+                LOG((CLOG_ERR "tailscale mode is active but no Tailscale interface found -- is Tailscale running?"));
+                return false;
+            }
+            LOG((CLOG_NOTE "tailscale mode: binding server to %s", tsAddr.c_str()));
+            listenAddress = NetworkAddress(tsAddr, listenAddress.getPort());
+            listenAddress.resolve();
+        }
         auto family = family_string(ARCH->getAddrFamily(listenAddress.getAddress()));
         listener   = openClientListener(listenAddress);
         m_server   = openServer(*args().m_config, m_primaryClient);
