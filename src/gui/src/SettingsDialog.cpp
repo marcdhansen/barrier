@@ -52,6 +52,7 @@ SettingsDialog::SettingsDialog(QWidget* parent, AppConfig& config) :
     m_pCheckBoxMinimizeToTray->setChecked(appConfig().getMinimizeToTray());
     m_pCheckBoxEnableCrypto->setChecked(m_appConfig.getCryptoEnabled());
     checkbox_require_client_certificate->setChecked(m_appConfig.getRequireClientCertificate());
+    m_pCheckBoxTailscaleMode->setChecked(m_appConfig.getTailscaleMode());
 
 #if defined(Q_OS_WIN)
     m_pComboElevate->setCurrentIndex(static_cast<int>(appConfig().elevateMode()));
@@ -69,6 +70,7 @@ void SettingsDialog::accept()
     m_appConfig.setNetworkInterface(m_pLineEditInterface->text());
     m_appConfig.setCryptoEnabled(m_pCheckBoxEnableCrypto->isChecked());
     m_appConfig.setRequireClientCertificate(checkbox_require_client_certificate->isChecked());
+    m_appConfig.setTailscaleMode(m_pCheckBoxTailscaleMode->isChecked());
     m_appConfig.setLogLevel(m_pComboLogLevel->currentIndex());
     m_appConfig.setLogToFile(m_pCheckBoxLogToFile->isChecked());
     m_appConfig.setLogFilename(m_pLineEditLogFilename->text());

@@ -548,7 +548,9 @@ void MainWindow::startBarrier()
 
 #endif
 
-    if (!m_AppConfig->getCryptoEnabled()) {
+    if (m_AppConfig->getTailscaleMode()) {
+        args << "--tailscale-mode";
+    } else if (!m_AppConfig->getCryptoEnabled()) {
         args << "--disable-crypto";
     }
 

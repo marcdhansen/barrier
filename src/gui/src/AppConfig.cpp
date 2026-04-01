@@ -158,6 +158,7 @@ void AppConfig::loadSettings()
     m_ElevateMode = static_cast<ElevateMode>(elevateMode.toInt());
     m_AutoConfigPrompted = settings().value("autoConfigPrompted", false).toBool();
     m_CryptoEnabled = settings().value("cryptoEnabled", true).toBool();
+    m_TailscaleMode = settings().value("tailscaleMode", false).toBool();
     // TODO: set default value of requireClientCertificate to true on Barrier 2.5.0
     m_RequireClientCertificate = settings().value("requireClientCertificate", false).toBool();
     m_AutoHide = settings().value("autoHide", false).toBool();
@@ -183,6 +184,7 @@ void AppConfig::saveSettings()
     settings().setValue("elevateModeEnum", static_cast<int>(m_ElevateMode));
     settings().setValue("autoConfigPrompted", m_AutoConfigPrompted);
     settings().setValue("cryptoEnabled", m_CryptoEnabled);
+    settings().setValue("tailscaleMode", m_TailscaleMode);
     settings().setValue("requireClientCertificate", m_RequireClientCertificate);
     settings().setValue("autoHide", m_AutoHide);
     settings().setValue("autoStart", m_AutoStart);
@@ -227,6 +229,10 @@ ElevateMode AppConfig::elevateMode() { return m_ElevateMode; }
 void AppConfig::setCryptoEnabled(bool e) { m_CryptoEnabled = e; }
 
 bool AppConfig::getCryptoEnabled() const { return m_CryptoEnabled; }
+
+void AppConfig::setTailscaleMode(bool e) { m_TailscaleMode = e; }
+
+bool AppConfig::getTailscaleMode() const { return m_TailscaleMode; }
 
 void AppConfig::setRequireClientCertificate(bool e) { m_RequireClientCertificate = e; }
 
