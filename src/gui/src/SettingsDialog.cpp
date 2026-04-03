@@ -52,6 +52,9 @@ SettingsDialog::SettingsDialog(QWidget* parent, AppConfig& config) :
     m_pCheckBoxMinimizeToTray->setChecked(appConfig().getMinimizeToTray());
     m_pCheckBoxEnableCrypto->setChecked(m_appConfig.getCryptoEnabled());
     checkbox_require_client_certificate->setChecked(m_appConfig.getRequireClientCertificate());
+    m_pCheckBoxTailscaleMode->setChecked(m_appConfig.getTailscaleMode());
+    // Set initial enabled state of SSL controls to match Tailscale checkbox
+    on_m_pCheckBoxTailscaleMode_stateChanged(m_appConfig.getTailscaleMode() ? 2 : 0);
 
 #if defined(Q_OS_WIN)
     m_pComboElevate->setCurrentIndex(static_cast<int>(appConfig().elevateMode()));
@@ -69,6 +72,7 @@ void SettingsDialog::accept()
     m_appConfig.setNetworkInterface(m_pLineEditInterface->text());
     m_appConfig.setCryptoEnabled(m_pCheckBoxEnableCrypto->isChecked());
     m_appConfig.setRequireClientCertificate(checkbox_require_client_certificate->isChecked());
+    m_appConfig.setTailscaleMode(m_pCheckBoxTailscaleMode->isChecked());
     m_appConfig.setLogLevel(m_pComboLogLevel->currentIndex());
     m_appConfig.setLogToFile(m_pCheckBoxLogToFile->isChecked());
     m_appConfig.setLogFilename(m_pLineEditLogFilename->text());
@@ -119,6 +123,14 @@ void SettingsDialog::on_m_pCheckBoxLogToFile_stateChanged(int i)
 
     m_pLineEditLogFilename->setEnabled(checked);
     m_pButtonBrowseLog->setEnabled(checked);
+}
+
+void SettingsDialog::on_m_pCheckBoxTailscaleMode_stateChanged(int i)
+{
+    // When Tailscale is active it owns encryption; SSL controls have no effect.
+    bool tailscale = i == 2;
+    m_pCheckBoxEnableCrypto->setEnabled(!tailscale);
+    checkbox_require_client_certificate->setEnabled(!tailscale);
 }
 
 void SettingsDialog::on_m_pButtonBrowseLog_clicked()

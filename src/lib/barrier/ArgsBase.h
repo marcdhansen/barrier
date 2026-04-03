@@ -51,6 +51,7 @@ public:
     bool                m_shouldExit;
     String                m_barrierAddress;
     bool                m_enableCrypto;
+    bool                m_tailscaleMode;
     barrier::fs::path m_profileDirectory;
     barrier::fs::path m_pluginDirectory;
 };

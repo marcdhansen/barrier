@@ -289,6 +289,11 @@ ArgParser::parseGenericArgs(int argc, const char* const* argv, int& i)
     else if (isArg(i, argc, argv, NULL, "--disable-crypto")) {
         argsBase().m_enableCrypto = false;
     }
+    else if (isArg(i, argc, argv, NULL, "--tailscale-mode")) {
+        argsBase().m_tailscaleMode = true;
+        argsBase().m_enableCrypto = false;
+        LOG((CLOG_INFO "tailscale mode: binding to Tailscale interface, TLS disabled (Tailscale handles encryption)"));
+    }
     else if (isArg(i, argc, argv, NULL, "--profile-dir", 1)) {
         argsBase().m_profileDirectory = barrier::fs::u8path(argv[++i]);
     }

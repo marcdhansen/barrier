@@ -91,6 +91,9 @@ class AppConfig: public QObject
         void setCryptoEnabled(bool e);
         bool getCryptoEnabled() const;
 
+        void setTailscaleMode(bool e);
+        bool getTailscaleMode() const;
+
         void setRequireClientCertificate(bool e);
         bool getRequireClientCertificate() const;
 
@@ -135,6 +138,7 @@ protected:
         ElevateMode m_ElevateMode;
         bool m_AutoConfigPrompted;
         bool m_CryptoEnabled;
+        bool m_TailscaleMode;
         bool m_RequireClientCertificate = false;
         bool m_AutoHide;
         bool m_AutoStart;

@@ -47,6 +47,7 @@ class SettingsDialog : public QDialog, public Ui::SettingsDialogBase
         void on_m_pComboLanguage_currentIndexChanged(int index);
         void on_m_pCheckBoxLogToFile_stateChanged(int );
         void on_m_pButtonBrowseLog_clicked();
+        void on_m_pCheckBoxTailscaleMode_stateChanged(int );
 };
 
 #endif
