@@ -53,6 +53,8 @@ SettingsDialog::SettingsDialog(QWidget* parent, AppConfig& config) :
     m_pCheckBoxEnableCrypto->setChecked(m_appConfig.getCryptoEnabled());
     checkbox_require_client_certificate->setChecked(m_appConfig.getRequireClientCertificate());
     m_pCheckBoxTailscaleMode->setChecked(m_appConfig.getTailscaleMode());
+    // Set initial enabled state of SSL controls to match Tailscale checkbox
+    on_m_pCheckBoxTailscaleMode_stateChanged(m_appConfig.getTailscaleMode() ? 2 : 0);
 
 #if defined(Q_OS_WIN)
     m_pComboElevate->setCurrentIndex(static_cast<int>(appConfig().elevateMode()));
@@ -121,6 +123,14 @@ void SettingsDialog::on_m_pCheckBoxLogToFile_stateChanged(int i)
 
     m_pLineEditLogFilename->setEnabled(checked);
     m_pButtonBrowseLog->setEnabled(checked);
+}
+
+void SettingsDialog::on_m_pCheckBoxTailscaleMode_stateChanged(int i)
+{
+    // When Tailscale is active it owns encryption; SSL controls have no effect.
+    bool tailscale = i == 2;
+    m_pCheckBoxEnableCrypto->setEnabled(!tailscale);
+    checkbox_require_client_certificate->setEnabled(!tailscale);
 }
 
 void SettingsDialog::on_m_pButtonBrowseLog_clicked()
