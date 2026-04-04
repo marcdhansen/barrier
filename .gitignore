@@ -32,3 +32,8 @@ CMakeCache.txt
 # Transient in-project-directory dependencies
 /deps/
 /out/build/x64-Debug
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
