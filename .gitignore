@@ -32,6 +32,7 @@ CMakeCache.txt
 # Transient in-project-directory dependencies
 /deps/
 /out/build/x64-Debug
+/build-test
 
 # Beads / Dolt files (added by bd init)
 .dolt/
