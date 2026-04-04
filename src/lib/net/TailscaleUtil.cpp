@@ -35,10 +35,12 @@ namespace barrier {
 // Tailscale uses the 100.64.0.0/10 CGNAT block:
 //   first address: 100.64.0.0  → 0x64400000
 //   last  address: 100.127.255.255 → 0x647FFFFF
-static bool is_tailscale_addr(uint32_t addr_host_order)
+namespace detail {
+bool is_tailscale_addr(uint32_t addr_host_order)
 {
     return (addr_host_order >= 0x64400000u) && (addr_host_order <= 0x647FFFFFu);
 }
+} // namespace detail
 
 std::string get_tailscale_address()
 {
@@ -68,7 +70,7 @@ std::string get_tailscale_address()
         for (auto* ua = a->FirstUnicastAddress; ua != nullptr; ua = ua->Next) {
             auto* sin = reinterpret_cast<sockaddr_in*>(ua->Address.lpSockaddr);
             uint32_t addr = ntohl(sin->sin_addr.s_addr);
-            if (is_tailscale_addr(addr)) {
+            if (detail::is_tailscale_addr(addr)) {
                 char buf[INET_ADDRSTRLEN];
                 inet_ntop(AF_INET, &sin->sin_addr, buf, sizeof(buf));
                 return buf;
@@ -91,7 +93,7 @@ std::string get_tailscale_address()
         }
         auto* sin = reinterpret_cast<struct sockaddr_in*>(ifa->ifa_addr);
         uint32_t addr = ntohl(sin->sin_addr.s_addr);
-        if (is_tailscale_addr(addr)) {
+        if (detail::is_tailscale_addr(addr)) {
             char buf[INET_ADDRSTRLEN];
             inet_ntop(AF_INET, &sin->sin_addr, buf, sizeof(buf));
             result = buf;
