@@ -138,7 +138,7 @@ protected:
         ElevateMode m_ElevateMode;
         bool m_AutoConfigPrompted;
         bool m_CryptoEnabled;
-        bool m_TailscaleMode;
+        bool m_TailscaleMode = false;
         bool m_RequireClientCertificate = false;
         bool m_AutoHide;
         bool m_AutoStart;

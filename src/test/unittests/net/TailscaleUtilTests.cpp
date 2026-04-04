@@ -44,7 +44,7 @@ TEST(TailscaleUtilTest, TypicalTailscaleAddress)
 
 TEST(TailscaleUtilTest, AddressJustBelowRange)
 {
-    EXPECT_FALSE(is_tailscale_addr(0x6443FFFFu)); // 100.63.255.255
+    EXPECT_FALSE(is_tailscale_addr(0x643FFFFFu)); // 100.63.255.255
 }
 
 TEST(TailscaleUtilTest, AddressJustAboveRange)
